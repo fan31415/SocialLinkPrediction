@@ -1,0 +1,7 @@
+data
+.idea
+*.txt
+*.emb
+*.pyc
+*.zip
+.DS_Store
