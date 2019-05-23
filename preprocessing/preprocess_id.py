@@ -2,7 +2,7 @@
 #     data = f.read().split('\n')
 # with open('email-Enron.txt', 'r') as f:
 #     data = f.read().split('\n')
-with open('facebook_combined.txt', 'r') as f:
+with open('data/facebook_combined.txt', 'r') as f:
     data = f.read().split('\n')
 
 
@@ -29,7 +29,7 @@ for line in data:
 
 
 
-with open('processedMat.txt', 'w') as f:
+with open('data/processedMat.txt', 'w') as f:
     for line in data:
         if line == '':
             continue

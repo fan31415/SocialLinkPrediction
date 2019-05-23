@@ -5,7 +5,7 @@ from copy import deepcopy
 import math
 # with open('facebook_combined.txt', 'r') as f:
 #     data = f.read().split('\n')
-with open('processedMat.txt', 'r') as f:
+with open('data/processedMat.txt', 'r') as f:
     data = f.read().split('\n')
 
 random.seed(42)
