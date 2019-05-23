@@ -16,7 +16,7 @@ def parse_args():
     parser.add_argument('--weighted', dest='weighted', action='store_true', help='Boolean specifying (un)weighted. Default is unweighted.')
     parser.add_argument('--unweighted', dest='unweighted', action='store_false')
     parser.set_defaults(weighted=False)
-    parser.add_argument('--embedding', nargs='?', default='data/facebook.emb', help='Node embedding path')
+    parser.add_argument('--embedding', nargs='?', default='data/embedding.emb', help='Node embedding path')
     parser.add_argument('--embedding_dim', type=int, default=128, help='Node embedding dimension')
 
     return parser.parse_args()

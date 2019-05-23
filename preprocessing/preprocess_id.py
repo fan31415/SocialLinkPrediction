@@ -2,7 +2,7 @@
 #     data = f.read().split('\n')
 # with open('email-Enron.txt', 'r') as f:
 #     data = f.read().split('\n')
-with open('data/facebook_combined.txt', 'r') as f:
+with open('data/graph.txt', 'r') as f:
     data = f.read().split('\n')
 
 
@@ -15,8 +15,8 @@ for line in data:
     #     break
     if line == '':
         continue
-    points = line.split(' ')
-    # points = line.split('\t')
+    # points = line.split(' ')
+    points = line.split('\t')
     p1 = int(points[0])
     if id2no.get(p1, -1) == -1:
         id2no[p1] = count
@@ -33,8 +33,8 @@ with open('data/processedMat.txt', 'w') as f:
     for line in data:
         if line == '':
             continue
-        points = line.split(' ')
-        # points = line.split('\t')
+        # points = line.split(' ')
+        points = line.split('\t')
         p1 = int(points[0])
         p2 = int(points[1])
         f.write(str(id2no[p1]) + ' ' + str(id2no[p2]) + '\n')
