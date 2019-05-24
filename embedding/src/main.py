@@ -31,7 +31,7 @@ def parse_args():
 	                    help='Number of dimensions. Default is 128.')
 
 	# parser.add_argument('--walk-length', type=int, default=80,
-	parser.add_argument('--walk-length', type=int, default=200,
+	parser.add_argument('--walk-length', type=int, default=80,
 	                    help='Length of walk per source. Default is 80.')
 
 	parser.add_argument('--num-walks', type=int, default=10,
@@ -40,7 +40,7 @@ def parse_args():
 	parser.add_argument('--window-size', type=int, default=10,
                     	help='Context size for optimization. Default is 10.')
 
-	parser.add_argument('--iter', default=2, type=int,
+	parser.add_argument('--iter', default=1, type=int,
                       help='Number of epochs in SGD')
 
 	parser.add_argument('--workers', type=int, default=8,

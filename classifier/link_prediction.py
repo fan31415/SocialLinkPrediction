@@ -29,7 +29,7 @@ def link_prediction_model(embedding_matrix):
     # add the sigmoid output layer
     output1 = Dense(128, activation='sigmoid')(dot_product)
 
-    # output2 = Dense(256, activation='sigmoid')(output1)
+    # output2 = Dense(128, activation='sigmoid')(output1)
 
 
     output = Dense(1, activation='sigmoid')(output1)

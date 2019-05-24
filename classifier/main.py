@@ -95,8 +95,9 @@ def main(args):
 
     model = link_prediction_model(embedding_matrix)
     batch_size = 128
-    num_epochs = 15
-    model.fit([X1, X2], y, batch_size=batch_size, epochs=num_epochs, shuffle=True, validation_split=0.2, verbose=1)
+    num_epochs = 6
+    # model.fit([X1, X2], y, batch_size=batch_size, epochs=num_epochs, shuffle=True, validation_split=0.2, verbose=1)
+    model.fit([X1, X2], y, batch_size=batch_size, epochs=num_epochs, shuffle=True, verbose=1)
 
     G_test_pos = read_graph("data/testEdges.txt", is_postive=True)
     print(G_test_pos.number_of_nodes(), G_test_pos.number_of_edges())

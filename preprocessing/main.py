@@ -12,6 +12,7 @@ random.seed(42)
 random.shuffle(data)
 G = nx.Graph()
 
+
 # edges = np.zeros()
 # this data (u v) keeps u < v and no (v, u) exist again
 # however networkx will not do this, it will only keep (v, u) nor exist, but not promise the order
@@ -45,16 +46,14 @@ for line in data:
 # test = data[:size//10]
 # train = data[size//10:]
 testRate = 0.1
-hiddenRate = 0.2
 testEdges = {}
 testNegEdges = {}
 
-hiddenEdges = {}
-hiddenNegEdges = {}
-
 observedEdges = {}
+negEdges = {}
 
 smallDgreeEdges = {}
+
 
 def addAllDict(dictionary, pairs, cnt):
 
@@ -87,7 +86,6 @@ def addDict(dictionary, pairs, cnt):
     pairs = pairs[:-cnt]
     # remove it from graph
 
-
     return pairs
 
 testList = []
@@ -100,10 +98,6 @@ for n, nbrs in G.adj.items():
     for nbr in nbrs:
         mat[n][nbr] = 1
 
-# edgeMap = []
-# nodeMap = []
-totalNegEdgeList = {}
-totalPosEdgeList = {}
 for i in range(size):
     edgeList = []
     nbrs = []
@@ -118,168 +112,31 @@ for i in range(size):
         addAllDict(observedEdges, edgeList, 0)
         continue
 
-    hiddenCnt = int(hiddenRate * degree)
-    edgeList = addDict(hiddenEdges, edgeList, hiddenCnt)
-    # testCnt = int(testRate * degree)
-    # edgeList = addDict(testEdges, edgeList, testCnt)
+    testCnt = int(testRate * degree)
 
-    # addAllDict(observedEdges, edgeList, 0)  # 0 is all
-    addAllDict(totalPosEdgeList, edgeList, 0)  # 0 is all
+    edgeList = addDict(testEdges, edgeList, testCnt)
+
+    posLen = len(edgeList)
+
+    addAllDict(observedEdges, edgeList, 0)  # 0 is all
     # negtive sample
-
-    # testNegCount = testCnt
-    hiddenNegCnt = hiddenCnt
 
     negEdgeList = [(i, v) for v in nodes - set(nbrs) - set([i])]
 
-
     random.shuffle(negEdgeList)
 
-    negEdgeList = addDict(hiddenNegEdges, negEdgeList, hiddenNegCnt)
+    edgeList = addDict(negEdges, negEdgeList, posLen)
 
-    totalNegEdgeList[i] = negEdgeList
-
-    # negEdgeList = addDict(testNegEdges, negEdgeList, testNegCount)
-    # edgeMap.append(edgeList)
-    # nodeMap.append(nbrs)
+    addDict(testNegEdges, negEdgeList, testCnt)
 
 
 
-#
-# for i in range(size):
-#     edgeList = edgeMap[i]
-#     nbrs = nodeMap[i]
-#     originEdgeList = edgeList # avoid edgelist to be edited
-#     degree = len(edgeList)
-#     if degree  < 10:
-#         # addDict(smallDgreeEdges, edgeList,  0)
-#         addDict(observedEdges, edgeList, 0)
-#         continue
-#
-#     hiddenCnt = int(hiddenRate * degree)
-#     edgeList = addDict(hiddenEdges, edgeList, hiddenCnt)
-#     testCnt = int(testRate * degree)
-#     edgeList = addDict(testEdges, edgeList, testCnt)
-#
-#     addDict(observedEdges, edgeList, 0) # 0 is all
-#     # negtive sample
-#
-#     testNegCount = testCnt
-#     hiddenNegCnt = hiddenCnt
-#
-#     negEdgeList = [(i, v) for v in nodes-set(nbrs) - set([i])]
-#
-#
-#     negEdgeList = addDict(hiddenNegEdges, negEdgeList, hiddenNegCnt)
-#
-#     negEdgeList = addDict(testNegEdges, negEdgeList, testNegCount)
-#
 
-#
-# for n, nbrs in G.adj.items():
-#     # positive sample
-#     degree = len(nbrs)
-#     edgeList = [(n, v) for v in nbrs]
-#     if degree  < 10:
-#         addDict(smallDgreeEdges, edgeList,  0)
-#
-#     hiddenCnt = int(hiddenRate * degree)
-#     edgeList = addDict(hiddenEdges, edgeList, hiddenCnt)
-#     testCnt = int(testRate * degree)
-#     edgeList = addDict(testEdges, edgeList, testCnt)
-#
-#     addDict(observedEdges, edgeList, 0) # 0 is all
-#     # negtive sample
-#     negEdgeList = [(n, v) for v in nodes-set(nbrs)]
-#     testNegCount = testCnt
-#     negEdgeList = addDict(testNegEdges, negEdgeList, testNegCount)
-#
-#     hiddenNegCnt = hiddenCnt
-#     addDict(hiddenNegEdges, negEdgeList, hiddenNegCnt)
-
-hiddenEdges = d2l(hiddenEdges)
-hiddenNegEdges = d2l(hiddenNegEdges)
 testEdges = d2l(testEdges)
-# testNegEdges = d2l(testNegEdges)
-# observedEdges = d2l(observedEdges)
+testNegEdges = d2l(testNegEdges)
+observedEdges = d2l(observedEdges)
+negEdges = d2l(negEdges)
 
-totalPosEdgeList =  d2l(totalPosEdgeList)
-
-hiddens = deepcopy(hiddenEdges)
-hiddens.extend(hiddenNegEdges)
-testEdges = []
-
-
-hidden_node = {}
-for edge in hiddens:
-    hidden_node[edge[0]] = True
-    hidden_node[edge[1]] = True
-hidden_node = hidden_node.keys()
-
-print("hidden_node", len(hidden_node))
-
-
-
-hidden_pos_size = len(hiddenEdges)
-hidden_neg_size = len(hiddenNegEdges)
-
-
-
-test_pos_size = hidden_pos_size//4
-test_neg_size = hidden_neg_size//4
-
-print('test pos size', test_pos_size)
-print('test neg size', test_neg_size)
-test_pos_count = 0
-test_neg_count = 0
-
-observedEdges = []
-
-
-for edge in totalPosEdgeList:
-    if test_pos_count < test_pos_size and edge[0] in hidden_node and edge[1] in hidden_node:
-        testEdges.append(edge)
-        test_pos_count += 1
-    else:
-        observedEdges.append(edge)
-
-testNegEdges = []
-
-
-
-# for edge in totalNegEdgeList:
-#     if test_neg_count < test_neg_size and edge[0] in hiddens and edge[1] in hiddens:
-#         testNegEdges.append(edge)
-#         test_neg_count +=1
-#     elif test_neg_count >= test_neg_size:
-#         break
-print(test_neg_size)
-break_flag = False
-for v, edgeList in totalNegEdgeList.items():
-
-    if v in hidden_node:
-        tempList = deepcopy(edgeList)
-        random.shuffle(tempList)
-        for edge in tempList:
-            if edge[1] in hidden_node:
-                testNegEdges.append(edge)
-                test_neg_count +=1
-                if test_neg_count >= test_neg_size:
-                    break_flag = True
-                    break
-                # print(test_neg_count)
-        if break_flag == True:
-            break
-
-
-# smallDgreeEdges = d2l(smallDgreeEdges)
-print('hidden')
-print(hiddenEdges)
-print(len(hiddenEdges))
-print('hidden neg')
-print(hiddenNegEdges[:10])
-print(len(hiddenNegEdges))
-print('test')
 print(testEdges[:10])
 print(len(testEdges))
 print('test neg')
@@ -288,11 +145,11 @@ print(len(testNegEdges))
 print('observed')
 print(observedEdges[:10])
 print(len(observedEdges))
-# print('small degree')
-# print(smallDgreeEdges[:10])
-# print(len(smallDgreeEdges))
-print('total')
-print(len(hiddenEdges)  + len(testEdges) + len(observedEdges))
+
+print('observed neg')
+print(negEdges[:10])
+print(len(negEdges))
+
 
 
 
@@ -303,20 +160,19 @@ def output(filename, edges):
 
 
 random.shuffle(observedEdges)
-random.shuffle(hiddenEdges)
-random.shuffle(hiddenNegEdges)
 random.shuffle(testEdges)
 random.shuffle(testNegEdges)
+random.shuffle(negEdges)
 
 # hiddenNegEdges = random.sample(hiddenNegEdges, len(hiddenEdges))
 # print(len(hiddenNegEdges))
 # testNegEdges = random.sample(testNegEdges, len(testEdges))
 # print(len(testEdges))
-output('../classfier/data/hiddenEdges.txt', hiddenEdges)
-output('../classfier/data/hiddenNegEdges.txt', hiddenNegEdges)
-output('../classfier/data/testEdges.txt', testEdges)
+output('../classifier/data/testEdges.txt', testEdges)
 output('../classifier/data/testNegEdges.txt', testNegEdges)
 output('../embedding/observedEdges.txt', observedEdges)
+output('../classifier/data/hiddenEdges.txt', observedEdges)
+output('../classifier/data/hiddenNegEdges.txt', negEdges)
 # output('smallDegreeEdges.txt', smallDgreeEdges)
 
 

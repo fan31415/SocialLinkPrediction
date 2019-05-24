@@ -2,7 +2,7 @@
 #     data = f.read().split('\n')
 # with open('email-Enron.txt', 'r') as f:
 #     data = f.read().split('\n')
-with open('data/graph.txt', 'r') as f:
+with open('data/graph_small.txt', 'r') as f:
     data = f.read().split('\n')
 
 
