@@ -37,7 +37,14 @@ python main.py
 cd embedding
 ```
 
-Prepare a python2.7 environment in conda, and change to this environment.
+Prepare a python2.7 environment in conda, and change to this environment. 
+
+* Script
+
+```
+sh run.sh
+```
+* Manual
 
 ```
 source activate python2
