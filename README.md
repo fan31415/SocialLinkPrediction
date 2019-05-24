@@ -60,5 +60,15 @@ Using nerual network to predict links
 python main.py
 ```
 
+## Datasets
+
+All experimental datasets are public, you can find in the following links:
+
+* **Facebook**: J. McAuley and J. Leskovec. Learning to Discover Social Circles in Ego Networks. NIPS, 2012. https://snap.stanford.edu/data/egonets-Facebook.html
+
+* **Email**: R. Guimera, L. Danon, A. Diaz-Guilera, F. Giralt and A. Arenas, Physical Review E , vol. 68, 065103(R), (2003). http://deim.urv.cat/~alexandre.arenas/data/welcome.htm
+
+* **Condensed Matter Collaborations**: M. E. J. Newman, The structure of scientific collaboration networks, Proc. Natl. Acad. Sci. USA 98, 404-409 (2001). http://www-personal.umich.edu/~mejn/netdata/
+
 ## Reference
 [Node2Vector](https://github.com/aditya-grover/node2vec)
